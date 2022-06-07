@@ -1,15 +1,17 @@
 package com.cylin.springbootmall.dao.impl;
 
 import com.cylin.springbootmall.dao.ProductDao;
+import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.rowMapper.ProductRowMapper;
 import com.cylin.springbootmall.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class ProductDaoImpl implements ProductDao {
@@ -33,5 +35,29 @@ public class ProductDaoImpl implements ProductDao {
         } else {
             return productList.get(0);
         }
+    }
+
+    @Override
+    public int createProduct(ProductRequest productRequest) {
+        String sql = "INSERT INTO product (product_name, category, image_url, price, stock, description, created_date, last_modified_date) " +
+                "VALUES (:product_name, :category, :image_url, :price, :stock, :description, :created_date, :last_modified_date)";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("product_name", productRequest.getProduct_name());
+        map.put("category", productRequest.getCategory().name());
+        map.put("image_url", productRequest.getImage_url());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
+        Date cur = new Date();
+        map.put("created_date", cur);
+        map.put("last_modified_date", cur);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+
+        return  keyHolder.getKey().intValue();
     }
 }
