@@ -52,4 +52,15 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable int productId){
+
+        productService.deleteProductById(productId);
+
+        if(productService.getProductById(productId) == null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 }

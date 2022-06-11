@@ -11,4 +11,6 @@ public interface ProductService {
     int createProduct(ProductRequest productRequest);
 
     Status updateProduct(int productId, ProductRequest productRequest);
+
+    void deleteProductById(int productId);
 }
