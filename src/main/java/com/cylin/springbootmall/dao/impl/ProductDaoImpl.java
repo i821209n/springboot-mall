@@ -1,11 +1,11 @@
 package com.cylin.springbootmall.dao.impl;
 
-import com.cylin.springbootmall.constant.ProductCategory;
 import com.cylin.springbootmall.constant.Status;
 import com.cylin.springbootmall.dao.ProductDao;
 import com.cylin.springbootmall.dto.ProductRequest;
-import com.cylin.springbootmall.rowMapper.ProductRowMapper;
 import com.cylin.springbootmall.model.Product;
+import com.cylin.springbootmall.model.ProductQueryParam;
+import com.cylin.springbootmall.rowMapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,21 +24,21 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParam productQueryParam) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, created_date, last_modified_date " +
                 "FROM product " +
                 "WHERE 1=1 ";
 
         Map<String, Object> map = new HashMap<>();
 
-        if(category != null){
+        if(productQueryParam.getCategory() != null){
             sql = sql + " AND category = :category ";
-            map.put("category", category.name());
+            map.put("category", productQueryParam.getCategory().name());
         }
 
-        if(search != null){
+        if(productQueryParam.getSearch() != null){
             sql = sql + " AND product_name LIKE :search ";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productQueryParam.getSearch() + "%");
         }
 
         return namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
@@ -47,8 +47,8 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Product getProductById(Integer productId) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, created_date, last_modified_date " +
-                    "FROM product " +
-                    "WHERE product_id = :product_id";
+                "FROM product " +
+                "WHERE product_id = :product_id";
 
         Map<String, Object> map = new HashMap<>();
         map.put("product_id", productId);

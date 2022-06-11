@@ -3,6 +3,7 @@ package com.cylin.springbootmall.controller;
 import com.cylin.springbootmall.constant.ProductCategory;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.model.Product;
+import com.cylin.springbootmall.model.ProductQueryParam;
 import com.cylin.springbootmall.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
 import static com.cylin.springbootmall.constant.Status.STATUS_SUCCESS;
@@ -24,7 +24,11 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) ProductCategory category,
                                                      @RequestParam(required = false) String search){
-        List<Product> list = productService.getProducts(category, search);
+        ProductQueryParam productQueryParam = new ProductQueryParam();
+        productQueryParam.setCategory(category);
+        productQueryParam.setSearch(search);
+
+        List<Product> list = productService.getProducts(productQueryParam);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }

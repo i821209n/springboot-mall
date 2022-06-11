@@ -1,15 +1,15 @@
 package com.cylin.springbootmall.dao;
 
-import com.cylin.springbootmall.constant.ProductCategory;
 import com.cylin.springbootmall.constant.Status;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.model.Product;
+import com.cylin.springbootmall.model.ProductQueryParam;
 
 import java.util.List;
 
 public interface ProductDao {
 
-    List<Product> getProducts(ProductCategory category, String search);
+    List<Product> getProducts(ProductQueryParam productQueryParam);
 
     Product getProductById(Integer productId);
 
