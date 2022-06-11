@@ -1,5 +1,6 @@
 package com.cylin.springbootmall.service.impl;
 
+import com.cylin.springbootmall.constant.Status;
 import com.cylin.springbootmall.dao.impl.ProductDaoImpl;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.model.Product;
@@ -22,5 +23,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int createProduct(ProductRequest productRequest) {
         return productDaoImpl.createProduct(productRequest);
+    }
+
+    @Override
+    public Status updateProduct(int productId, ProductRequest productRequest) {
+        return productDaoImpl.updateProduct(productId, productRequest);
     }
 }

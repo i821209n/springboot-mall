@@ -1,5 +1,6 @@
 package com.cylin.springbootmall.dao.impl;
 
+import com.cylin.springbootmall.constant.Status;
 import com.cylin.springbootmall.dao.ProductDao;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.rowMapper.ProductRowMapper;
@@ -12,6 +13,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+
+import static com.cylin.springbootmall.constant.Status.STATUS_SUCCESS;
 
 @Component
 public class ProductDaoImpl implements ProductDao {
@@ -58,6 +61,29 @@ public class ProductDaoImpl implements ProductDao {
 
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
 
-        return  keyHolder.getKey().intValue();
+        return  Objects.requireNonNull(keyHolder.getKey()).intValue();
+    }
+
+    @Override
+    public Status updateProduct(int productId, ProductRequest productRequest) {
+        String sql = "UPDATE product SET product_name = :product_name, category = :category, image_url = :image_url," +
+                " price = :price, stock = :stock, description = :description, last_modified_date = :last_modified_date " +
+                "WHERE product_id = :product_id";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("product_id", productId);
+        map.put("product_name", productRequest.getProduct_name());
+        map.put("category", productRequest.getCategory().name());
+        map.put("image_url", productRequest.getImage_url());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
+        Date cur = new Date();
+        map.put("last_modified_date", cur);
+
+        namedParameterJdbcTemplate.update(sql, map);
+
+        return STATUS_SUCCESS;
     }
 }

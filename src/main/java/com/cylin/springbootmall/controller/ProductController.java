@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.cylin.springbootmall.constant.Status.STATUS_SUCCESS;
+
 @RestController
 public class ProductController {
 
@@ -34,5 +36,20 @@ public class ProductController {
         Product product = productService.getProductById(productId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updatedProduct(@PathVariable int productId,
+                                                  @RequestBody @Valid ProductRequest productRequest){
+
+        if(productService.getProductById(productId) != null){
+            if(productService.updateProduct(productId, productRequest) == STATUS_SUCCESS){
+                Product product = productService.getProductById(productId);
+                return ResponseEntity.status(HttpStatus.OK).body(product);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
     }
 }
