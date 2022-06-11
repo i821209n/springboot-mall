@@ -1,5 +1,6 @@
 package com.cylin.springbootmall.controller;
 
+import com.cylin.springbootmall.constant.ProductCategory;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.model.Product;
 import com.cylin.springbootmall.service.impl.ProductServiceImpl;
@@ -21,8 +22,9 @@ public class ProductController {
     private ProductServiceImpl productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> list = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) ProductCategory category,
+                                                     @RequestParam(required = false) String search){
+        List<Product> list = productService.getProducts(category, search);
 
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }

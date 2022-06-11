@@ -1,5 +1,6 @@
 package com.cylin.springbootmall.service.impl;
 
+import com.cylin.springbootmall.constant.ProductCategory;
 import com.cylin.springbootmall.constant.Status;
 import com.cylin.springbootmall.dao.impl.ProductDaoImpl;
 import com.cylin.springbootmall.dto.ProductRequest;
@@ -17,8 +18,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDaoImpl productDaoImpl;
 
     @Override
-    public List<Product> getProducts() {
-        return productDaoImpl.getProducts();
+    public List<Product> getProducts(ProductCategory category, String search) {
+        return productDaoImpl.getProducts(category, search);
     }
 
     @Override
