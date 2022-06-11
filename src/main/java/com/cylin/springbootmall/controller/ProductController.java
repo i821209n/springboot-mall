@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static com.cylin.springbootmall.constant.Status.STATUS_SUCCESS;
 
 @RestController
@@ -17,6 +19,13 @@ public class ProductController {
 
     @Autowired
     private ProductServiceImpl productService;
+
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts(){
+        List<Product> list = productService.getProducts();
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
