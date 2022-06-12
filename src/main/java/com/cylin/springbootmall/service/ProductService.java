@@ -18,4 +18,6 @@ public interface ProductService {
     Status updateProduct(int productId, ProductRequest productRequest);
 
     void deleteProductById(int productId);
+
+    int countProduct(ProductQueryParam productQueryParam);
 }
