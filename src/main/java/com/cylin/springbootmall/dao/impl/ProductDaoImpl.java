@@ -31,15 +31,7 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
-        if(productQueryParam.getCategory() != null){
-            sql = sql + " AND category = :category ";
-            map.put("category", productQueryParam.getCategory().name());
-        }
-
-        if(productQueryParam.getSearch() != null){
-            sql = sql + " AND product_name LIKE :search ";
-            map.put("search", "%" + productQueryParam.getSearch() + "%");
-        }
+        sql = addFilteringSql(productQueryParam, sql, map);
 
         sql = sql + " ORDER BY " + productQueryParam.getOrderBy() + " " + productQueryParam.getSort();
 
@@ -74,12 +66,8 @@ public class ProductDaoImpl implements ProductDao {
                 "VALUES (:product_name, :category, :image_url, :price, :stock, :description, :created_date, :last_modified_date)";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("product_name", productRequest.getProduct_name());
-        map.put("category", productRequest.getCategory().name());
-        map.put("image_url", productRequest.getImage_url());
-        map.put("price", productRequest.getPrice());
-        map.put("stock", productRequest.getStock());
-        map.put("description", productRequest.getDescription());
+
+        addProductRequest2Map(map, productRequest);
 
         Date cur = new Date();
         map.put("created_date", cur);
@@ -100,12 +88,8 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
         map.put("product_id", productId);
-        map.put("product_name", productRequest.getProduct_name());
-        map.put("category", productRequest.getCategory().name());
-        map.put("image_url", productRequest.getImage_url());
-        map.put("price", productRequest.getPrice());
-        map.put("stock", productRequest.getStock());
-        map.put("description", productRequest.getDescription());
+
+        addProductRequest2Map(map, productRequest);
 
         Date cur = new Date();
         map.put("last_modified_date", cur);
@@ -131,6 +115,12 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
+        sql = addFilteringSql(productQueryParam, sql, map);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+    }
+
+    private String addFilteringSql(ProductQueryParam productQueryParam, String sql, Map<String, Object> map){
         if(productQueryParam.getCategory() != null){
             sql = sql + " AND category = :category ";
             map.put("category", productQueryParam.getCategory().name());
@@ -141,6 +131,16 @@ public class ProductDaoImpl implements ProductDao {
             map.put("search", "%" + productQueryParam.getSearch() + "%");
         }
 
-        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return sql;
+    }
+
+    private void addProductRequest2Map(Map<String, Object> map, ProductRequest productRequest){
+        map.put("product_name", productRequest.getProduct_name());
+        map.put("category", productRequest.getCategory().name());
+        map.put("image_url", productRequest.getImage_url());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
     }
 }
