@@ -1,5 +1,6 @@
 package com.cylin.springbootmall.controller;
 
+import com.cylin.springbootmall.dto.UserLoginRequest;
 import com.cylin.springbootmall.dto.UserRegisterRequest;
 import com.cylin.springbootmall.model.User;
 import com.cylin.springbootmall.service.UserService;
@@ -25,5 +26,13 @@ public class UserController {
         User user = userService.getUserById(id);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
+        User user = userService.login(userLoginRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+
     }
 }
