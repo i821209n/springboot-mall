@@ -1,11 +1,14 @@
 package com.cylin.springbootmall.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class User {
 
     private int user_id;
     private String email;
+    @JsonIgnore
     private String password;
     private Date created_date;
     private Date last_modified_date;
