@@ -1,4 +1,4 @@
-package com.cylin.springbootmall.model;
+package com.cylin.springbootmall.dto;
 
 import com.cylin.springbootmall.constant.ProductCategory;
 

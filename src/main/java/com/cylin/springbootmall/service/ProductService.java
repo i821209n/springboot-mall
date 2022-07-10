@@ -3,7 +3,7 @@ package com.cylin.springbootmall.service;
 import com.cylin.springbootmall.constant.Status;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.model.Product;
-import com.cylin.springbootmall.model.ProductQueryParam;
+import com.cylin.springbootmall.dto.ProductQueryParam;
 
 import java.util.List;
 

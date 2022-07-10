@@ -3,7 +3,7 @@ package com.cylin.springbootmall.controller;
 import com.cylin.springbootmall.constant.ProductCategory;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.model.Product;
-import com.cylin.springbootmall.model.ProductQueryParam;
+import com.cylin.springbootmall.dto.ProductQueryParam;
 import com.cylin.springbootmall.service.impl.ProductServiceImpl;
 import com.cylin.springbootmall.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;

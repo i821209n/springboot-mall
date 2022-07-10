@@ -4,7 +4,7 @@ import com.cylin.springbootmall.constant.Status;
 import com.cylin.springbootmall.dao.ProductDao;
 import com.cylin.springbootmall.dto.ProductRequest;
 import com.cylin.springbootmall.model.Product;
-import com.cylin.springbootmall.model.ProductQueryParam;
+import com.cylin.springbootmall.dto.ProductQueryParam;
 import com.cylin.springbootmall.rowMapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
