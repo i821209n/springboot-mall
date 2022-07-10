@@ -5,6 +5,7 @@ import com.cylin.springbootmall.dao.ProductDao;
 import com.cylin.springbootmall.dao.UserDao;
 import com.cylin.springbootmall.dto.BuyItem;
 import com.cylin.springbootmall.dto.BuyItemsRequest;
+import com.cylin.springbootmall.dto.OrderQueryParam;
 import com.cylin.springbootmall.model.Order;
 import com.cylin.springbootmall.model.OrderItem;
 import com.cylin.springbootmall.model.Product;
@@ -77,6 +78,25 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItemList(list);
 
         return order;
+    }
+
+    @Override
+    public List<Order> getOrders(int userId, OrderQueryParam orderQueryParam) {
+        checkUser(userId);
+
+        List<Order> orders = orderDao.getOrders(userId, orderQueryParam);
+
+        for(Order order : orders){
+            List<OrderItem> items = orderDao.getItemListById(order.getOrder_id());
+            order.setOrderItemList(items);
+        }
+
+        return orders;
+    }
+
+    @Override
+    public int countOrder(int userId) {
+        return orderDao.countOrder(userId);
     }
 
     private void checkUser(int userId){

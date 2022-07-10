@@ -1,5 +1,6 @@
 package com.cylin.springbootmall.dao;
 
+import com.cylin.springbootmall.dto.OrderQueryParam;
 import com.cylin.springbootmall.model.Order;
 import com.cylin.springbootmall.model.OrderItem;
 
@@ -14,4 +15,8 @@ public interface OrderDao {
     Order getOrderById(int orderId);
 
     List<OrderItem> getItemListById(int orderId);
+
+    List<Order> getOrders(int userId, OrderQueryParam orderQueryParam);
+
+    int countOrder(int userId);
 }

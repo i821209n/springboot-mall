@@ -1,6 +1,7 @@
 package com.cylin.springbootmall.dao.impl;
 
 import com.cylin.springbootmall.dao.OrderDao;
+import com.cylin.springbootmall.dto.OrderQueryParam;
 import com.cylin.springbootmall.model.Order;
 import com.cylin.springbootmall.model.OrderItem;
 import com.cylin.springbootmall.rowMapper.OrderItemRowMapper;
@@ -93,5 +94,36 @@ public class OrderDaoImpl implements OrderDao {
         map.put("order_id", orderId);
 
         return namedParameterJdbcTemplate.query(sql, map, new OrderItemRowMapper());
+    }
+
+    @Override
+    public List<Order> getOrders(int userId, OrderQueryParam orderQueryParam) {
+        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date " +
+                "FROM `order` " +
+                "WHERE 1 = 1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        sql = sql + " AND user_id = :user_id ";
+        sql = sql + " ORDER BY created_date desc ";
+        sql = sql + " LIMIT :limit OFFSET :offset ";
+
+        map.put("user_id", userId);
+        map.put("limit", orderQueryParam.getLimit());
+        map.put("offset", orderQueryParam.getOffset());
+
+        return namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+    }
+
+    @Override
+    public int countOrder(int userId) {
+        String sql = "SELECT count(*) " +
+                "FROM `order` " +
+                "WHERE user_id = :user_id";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", userId);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
     }
 }
